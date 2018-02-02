@@ -1,0 +1,11 @@
+__pycache__/
+cache/
+output/
+venv/
+pelican-themes/
+.DS_Store
+*.pyc
+srv.pid
+pelican.pid
+surya_keys
+surya_keys.pub
