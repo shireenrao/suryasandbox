@@ -7,5 +7,5 @@ pelican-themes/
 *.pyc
 srv.pid
 pelican.pid
-surya_keys
-surya_keys.pub
+deploy_keys
+deploy_keys.pub
