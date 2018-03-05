@@ -13,7 +13,7 @@ DEPLOY_PATH = env.deploy_path
 
 # Remote server configuration
 production = 'deployer@nyayapati.com:22'
-dest_path = '/home/deployer/suryasandbox'
+dest_path = '/home/deployer/nyayapati/surya'
 
 # Port for `serve`
 PORT = 8000
