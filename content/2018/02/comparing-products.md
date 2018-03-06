@@ -5,7 +5,7 @@ Category: Rant
 Slug: comparing-products
 Status: published
 
-** Comparing two or more products and choosing the right one for the task. **
+**Comparing two or more products and choosing the right one for the task.**
 
 -   What problem are they trying to solve.
 -   Wow many people are using them.
