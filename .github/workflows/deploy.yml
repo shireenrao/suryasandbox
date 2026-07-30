@@ -20,17 +20,16 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install pelican markdown jinja2 MarkupSafe feedgenerator python-dateutil "feedparser>=6.0.0" beautifulsoup4 typogrify
+          pip install pelican markdown jinja2 MarkupSafe feedgenerator python-dateutil "feedparser>=6.0.0" beautifulsoup4 typogrify pygments unidecode
 
       - name: Build site with Pelican
         run: pelican content -s publishconf.py
 
-      - name: Deploy to Server via SSH rsync
-        uses: easingthemes/ssh-deploy@main
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
-          REMOTE_HOST: ${{ secrets.SERVER_IP }}
-          REMOTE_USER: deployer
-          TARGET: /srv/nyayapati/webroot/surya/
-          SOURCE: output/
-          ARGS: "-rltgoDzvO --delete"
+      - name: Set up SSH Key
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SERVER_SSH_KEY }}
+
+      - name: Deploy via rsync
+        run: |
+          rsync -avz --delete -e "ssh -o StrictHostKeyChecking=no" output/ deployer@${{ secrets.SERVER_IP }}:/srv/nyayapati/webroot/surya/
