@@ -31,7 +31,22 @@ jobs:
           SERVER_SSH_KEY: ${{ secrets.SERVER_SSH_KEY }}
         run: |
           mkdir -p ~/.ssh
-          printf "%s\n" "$SERVER_SSH_KEY" > ~/.ssh/deploy_key
+          python3 -c '
+          import os, base64
+          key = os.environ.get("SERVER_SSH_KEY", "").strip()
+          key_path = os.path.expanduser("~/.ssh/deploy_key")
+          if "BEGIN" in key:
+              lines = key.split()
+              header = " ".join(lines[:4])
+              footer = " ".join(lines[-4:])
+              body = "\n".join(lines[4:-4])
+              formatted = f"{header}\n{body}\n{footer}\n"
+              with open(key_path, "w") as f:
+                  f.write(formatted)
+          else:
+              with open(key_path, "wb") as f:
+                  f.write(base64.b64decode(key))
+          '
           chmod 600 ~/.ssh/deploy_key
           rsync -avz --delete -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no" output/ deployer@"$SERVER_IP":/srv/nyayapati/webroot/surya/
           rm -f ~/.ssh/deploy_key
